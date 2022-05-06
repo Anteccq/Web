@@ -4,10 +4,19 @@
     ViewData["Title"] = "Home Page";
 }
 
+@section Header
+{
+    <link href="~/css/scoped/home.css" rel="stylesheet" />
+}
+
 <div class="blog-list">
 @foreach (var summary in Model.Summaries)
 {
     <h1><a class="blog-link" href="blog/@summary.Id">@summary.Title</a></h1>
-    <p>@string.Join(", ", summary.Tags)</p>
+    <p class="tags">@string.Join(", ", summary.Tags)</p>
+    <div class="blog-timestamp">
+        <time datetime="@summary.CreatedAt.ToString("yyyy-MM-dd")">投稿日: @summary.CreatedAt.ToString("yyyy/MM/dd")</time>
+        <time datetime="@summary.UpdatedAt.ToString("yyyy-MM-dd")">更新日: @summary.UpdatedAt.ToString("yyyy/MM/dd")</time>
+    </div>
 }
 </div>
