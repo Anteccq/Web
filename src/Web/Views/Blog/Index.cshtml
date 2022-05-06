@@ -1,0 +1,18 @@
+﻿@model Web.Models.Data.Blogs.Blog;
+
+@section Header{
+    <link href="~/css/prism.css" rel="stylesheet" />
+}
+
+@{
+    ViewData["title"] = Model.Title;
+}
+
+<div class="blog-content">
+    @Html.Raw(Model.RenderedContent);
+</div>
+
+@section Scripts
+{
+    <script src="~/js/prism.js"></script>
+}
