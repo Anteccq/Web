@@ -6,6 +6,10 @@
     <title>@ViewData["Title"] - Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&family=Noto+Sans+JP&family=Noto+Sans+Mono:wght@300&display=swap" rel="stylesheet"> 
+    <link href="~/Web.styles.css" rel="stylesheet">
     @await RenderSectionAsync("Header", false)
 </head>
 <body>
@@ -30,7 +34,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="main-container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

@@ -16,7 +16,7 @@ public class StubBlogRepository : IBlogRepository
     public Task<Blog> GetByIdAsync(int id)
     {
         return Task.FromResult(
-            new Blog(id, $"Blog {id}", new[] { "tech", "random"}, _renderedBody, DateTimeOffset.Now, DateTimeOffset.Now ));
+            new Blog(id, $"Anteccq Blog", new[] { "tech", "random", id.ToString()}, _renderedBody, DateTimeOffset.Now, DateTimeOffset.Now ));
     }
 
     public Task<IEnumerable<Blog>> GetAsync(int count = 5, int offset = 0)

@@ -15,4 +15,20 @@ html {
 
 body {
   margin-bottom: 60px;
+  font-family: 'Sawarabi Gothic', sans-serif;
+}
+
+.main-container {
+  width: 840px;
+  align-items: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (max-width: 480px) {
+  .main-container {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 16px;
+  }
 }

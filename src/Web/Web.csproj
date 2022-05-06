@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\css\blog.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="DummyBlogContent.md" />
   </ItemGroup>
 

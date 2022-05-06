@@ -2,6 +2,7 @@
 
 @section Header{
     <link href="~/css/prism.css" rel="stylesheet" />
+    <link href="~/css/scoped/blog.css" rel="stylesheet" />
 }
 
 @{
@@ -9,6 +10,12 @@
 }
 
 <div class="blog-content">
+    <h1 class="blog-title">@Model.Title</h1>
+    <p class="blog-tag">@string.Join(", ", Model.Tags)</p>
+    <div class="blog-timestamp">
+        <time datetime="@Model.CreatedAt.ToString("yyyy-MM-dd")">投稿日: @Model.CreatedAt.ToString("yyyy/MM/dd")</time>
+        <time datetime="@Model.UpdatedAt.ToString("yyyy-MM-dd")">更新日: @Model.UpdatedAt.ToString("yyyy/MM/dd")</time>
+    </div>
     @Html.Raw(Model.RenderedContent);
 </div>
 
