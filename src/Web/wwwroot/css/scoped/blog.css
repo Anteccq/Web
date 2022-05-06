@@ -1,7 +1,8 @@
 ﻿.blog-content p{
-    font-size: 18.5px;
-    margin-bottom: 0.5rem;
+    font-size: 17px;
+    margin-bottom: 1.6rem;
     line-height: 160%;
+    font-family: 'Noto Sans JP', sans-serif;
 }
 
 .blog-content h1{
@@ -41,4 +42,14 @@
 
 .blog-content a {
     text-decoration: none;
+}
+
+.blog-content blockquote{
+    margin-left: 10px;
+    box-shadow: rgb(61, 61, 61) 2px 0 0 0 inset;
+    padding-left: 10px;
+}
+
+.blog-content blockquote p{
+    color:rgb(100, 100, 100)
 }
