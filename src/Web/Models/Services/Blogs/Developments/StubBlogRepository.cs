@@ -12,7 +12,7 @@ public class StubBlogRepository : IBlogRepository
         var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
         var markdownContent = File.ReadAllText("./DummyBlogContent.md");
         _renderedBody = Markdown.ToHtml(markdownContent, pipeline);
-        _embeddedBlog = new Blog(0, "Blog with ASP .NET Core MVC", new[] { "Tech", "ASP.NET Core", "C#" },
+        _embeddedBlog = new Blog(0, "ASP .NET Core MVC で個人ブログを作った", new[] { "Tech", "ASP.NET Core", "C#" },
             _renderedBody, DateTimeOffset.Parse("2022/05/07"), DateTimeOffset.Parse("2022/05/07"));
     }
 
