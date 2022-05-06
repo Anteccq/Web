@@ -1,0 +1,31 @@
+.eye-catch {
+    text-align: center;
+    margin-top: 32px;
+    padding: 72px 0;
+    background-color: black;
+    width: 100vw;
+    position: absolute;
+    left: 0;
+}
+
+.eye-catch .name {
+    font-family: 'Zen Antique Soft', serif;
+    font-size: 72px;
+    color: white;
+}
+
+.self-introduction {
+    position: relative;
+    top: 340px;
+    text-align: center;
+}
+
+.social {
+    position: relative;
+    top: 400px;
+    text-align: center;
+}
+
+.social-link {
+    margin-right: 20px;
+}
