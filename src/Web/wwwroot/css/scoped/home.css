@@ -1,0 +1,12 @@
+﻿.blog-list {
+    margin-top: 32px;
+}
+
+.blog-list p{
+    margin-bottom: 0px;
+}
+
+.blog-link {
+    color: black;
+    text-decoration: none;
+}

@@ -1,59 +1,67 @@
-これは試験用ダミーコンテンツ。
+ブログを作りました。今まで全くといっていいほど Web に触れてこなかったですが、ふと「ブログでもつくるかぁ」と思い立ったので作ってみました。
 
-マイニングに興味があったもしくはやってみたことがある人は聞いたことがあるかもしれない。Difficultyとは、その名の通り困難性を意味している。ブロックに対して難しさとは何だと疑問に思うかもしれないが、このシステムがブロックチェーン技術への信頼性を生み出している。
+今まで Web に触れてこなかった大きな理由は css 辛そう ＆ js 辛そうの２つだったのですが、ASP .NET Core のおかげで js は（ほとんど） C# に置き換えれるし、 css は今まで XAML を触ってきた経験が実は生かせるんじゃね？と思ったりなんかしちゃったりしたという考えの下、半分自分への挑戦課題てきな感覚で取り組んだのでした。
 
-Difficultyとは「先頭nビットが0である値になるまで計算しなさい」という条件を示していて、たとえば7だったら `0x01FFFFF...` 以下になるまで繰り返し計算しなさいということになる。この条件の厳しさは、新たなブロックがブロックチェーンに紡がれる速度を制御するためで、たとえばビットコインでは、全世界のコンピュータが計算し続けて10分に一回しか正解が見つからないような値になっている。
+ブログをDBから取り出す機構などなどは未完成で、このポストもソースに埋め込んであるわけですが、とりあえず良い感じにはなったのではないでしょうか。
 
-> 参考：もし手元にプール接続型ではないBitcoinマイナーがあるならば、採掘できるまで動かしてみると良いだろう。数か月後、電気代の明細をみてあなたはあきらめるだろう。
+## 技術について
+### フレームワーク
+みんな大好き ASP .NET Core MVC を使っています。はい。
 
-このDifficulty値は可変であり、たとえば10秒に1回だけ正解が見つかるように設定したとして、実際は6秒であった場合はBitsの数が増え、次回の計算量が増える。逆に18秒もかかっていた場合は、困難値を下げることで、10秒に近づくよう時間が調整される。
+なんでってそりゃ C# が好きだからです。はい。
+### 利用ライブラリ
+このブログで利用させていただいたものは以下です。
 
-> 注意：簡略的に説明をするためビット数によるDifficulty定義を行っているが、ビットコインやイーサリアム等多くのブロックチェーンでは、さらに細かいDifficulty調整がされている。
-> ここに過去に私が実験的実装を行ったリポジトリを[こちら](https://github.com/Anteccq/ArCanaRain/blob/main/ArCanaRain.Difficulty/Programs.cs)に示しておく。
+#### [Markdig](https://github.com/xoofx/markdig)
+説明不要レベルに C# では有名な Markdown パーサですね。
+色々と Extensions が充実しているのも強みで、 HTML へ変換する際に class や id を付与することも簡単にできます。
 
+将来的には Markdown でブログを書き、 Markdig を通して HTML 化して DB に保存。
+HTML 化されたものを Web アプリ側で取り出して表示するという予定です。
 
-[リンク](https://github.com/Anteccq)
+余談ですが、 DI 用にインターフェースを切っておくと、 DB から取り出す機構を作る前でも埋め込みを持ってくるクラスを書いて DI コンテナに登録するだけでよしなに動かせたりと、便利だなと。
 
-![画像](https://github.com/Anteccq.png)
+SOLID 原則「具体ではなく抽象に依存せよ」の疎結合が、いかに良いことで、大きな恩恵をもたらしてくれているのかがよく分かったきがします。
 
-## BlogRepository Interface
+プロジェクトで単体テストを書く度に実感してはいましたが、改めて感じました。いや、さっさとちゃんとした機構を実装しろという話なんですが。
+
+#### [PrismJs](https://prismjs.com/)
+Web に全く触れてこなかったせいで js 系のライブラリは全く分からない状態でしたが、コードブロックのシンタックスハイライトをどうしても良い感じにしたかったために調べて導入しました。
+
+Markdig にもサードパーティの拡張が存在したのですが、 .NET Framework であったり、ハイライトされる部分がいまいちだったりとﾋﾞﾐｮ-----だったので Prism Js のお力を借りました。
+
+Prism さんに頼ったおかげで以下のように綺麗なシンタックスハイライトになりました。
 
 ```csharp
-using System;
-using System.Reactive.Concurrency;
-using Microsoft.Extensions.DependencyInjection;
-using Sample.Models.Notification;
-using Sample.ViewModels;
-
-namespace Sample.Views;
-
-public class ViewModelResolver
+public bool Mine(Block block, CancellationToken token = default(CancellationToken))
 {
-    public static ViewModelResolver Resolver { get; } = new();
+    var target = ToTargetBytes(block.Bits);
+    var rnd = new Random();
+    var nonceSeed = new byte[sizeof(ulong)];
+    rnd.NextBytes(nonceSeed);
 
-    private readonly IServiceProvider _serviceProvider;
-    private ViewModelResolver()
+    var nonce = BitConverter.ToUInt64(nonceSeed, 0);
+    while (!token.IsCancellationRequested)
     {
-        _serviceProvider = Configure(services =>
-        {
-            services.AddSingleton<IScheduler>(_ => DefaultScheduler.Instance);
-            services.AddSingleton<INotificator, ToastNotificator>();
-            services.AddSingleton<MainWindowViewModel>();
-        });
+        block.Nonce = nonce++;
+        block.Timestamp = DateTime.UtcNow;
+        var hash = block.ComputeId();
+        Console.WriteLine(new HexString(hash).ToString());
+        if (!HashCheck(hash, target)) continue;
+        block.Id = new HexString(hash);
+
+        Console.WriteLine();
+        var bytes = JsonSerializer.Serialize(block);
+        var json = JsonSerializer.PrettyPrint(bytes);
+        Console.WriteLine($"Mined : {json}");
+        return true;
     }
 
-    public T Get<T>() where T : ViewModelBase
-        => _serviceProvider.GetRequiredService<T>();
-
-    private static IServiceProvider Configure(Action<IServiceCollection> configure)
-    {
-        var serviceCollection = new ServiceCollection();
-        configure(serviceCollection);
-        return serviceCollection.BuildServiceProvider();
-    }
+    return false;
 }
 ```
 
-## 書くことが思いつかない。
-まぁそんなわけで。
-ではさようなら。
+## おわりに
+せっかく作ったので色々と育てていくつもりです。
+
+ブログも開発もほそぼそとやっていこうと思います。

@@ -6,25 +6,29 @@ namespace Web.Models.Services.Blogs.Developments;
 public class StubBlogRepository : IBlogRepository
 {
     private readonly string _renderedBody;
+    private readonly Blog _embeddedBlog;
     public StubBlogRepository()
     {
         var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
         var markdownContent = File.ReadAllText("./DummyBlogContent.md");
-        _renderedBody = Markdig.Markdown.ToHtml(markdownContent, pipeline);
+        _renderedBody = Markdown.ToHtml(markdownContent, pipeline);
+        _embeddedBlog = new Blog(0, "ASP .NET Core MVC で個人ブログを作った", new[] { "Tech", "ASP.NET Core", "C#" },
+            _renderedBody, DateTimeOffset.Parse("2022/05/07"), DateTimeOffset.Parse("2022/05/07"));
     }
 
     public Task<Blog> GetByIdAsync(int id)
     {
-        return Task.FromResult(
-            new Blog(id, $"Anteccq Blog", new[] { "tech", "random", id.ToString()}, _renderedBody, DateTimeOffset.Now, DateTimeOffset.Now ));
+        return Task.FromResult(_embeddedBlog);
     }
 
     public Task<IEnumerable<Blog>> GetAsync(int count = 5, int offset = 0)
     {
-        return Task.FromResult(Enumerable
-            .Range(offset, count)
-            .Select(x => new Blog(x, $"Blog {x}", new[] { "Tech", "Random" }, _renderedBody, DateTimeOffset.Now,
-                DateTimeOffset.Now)));
+        IEnumerable<Blog> blogs = new List<Blog>
+        {
+            _embeddedBlog
+        };
+
+        return Task.FromResult(blogs);
     }
 
     public Task CreateAsync(string markdownContent, string[] tags)
