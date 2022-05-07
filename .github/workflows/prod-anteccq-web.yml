@@ -2,7 +2,7 @@ name: .NET Core アプリケーションを構築して Web アプリ prod-antec
 on:
   push:
     branches:
-    - master
+    - main
 env:
   AZURE_WEBAPP_NAME: prod-anteccq-web
   AZURE_WEBAPP_PACKAGE_PATH: src/Web/published
