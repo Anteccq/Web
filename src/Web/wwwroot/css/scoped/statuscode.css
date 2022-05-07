@@ -1,0 +1,14 @@
+﻿body {
+    background-color: black;
+}
+
+.main-container {
+    width: 100%;
+}
+
+.error-statuscode {
+    color: whitesmoke;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 80px;
+}

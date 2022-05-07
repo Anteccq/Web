@@ -23,6 +23,11 @@ namespace Web.Controllers
             return View(new IndexViewModel(blogs.Select(x => new BlogSummary(x.Id, x.Title, x.Tags, x.CreatedAt, x.UpdatedAt))));
         }
 
+        public IActionResult StatusCode(int? id)
+        {
+            return View(new StatusCodeViewModel(id));
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
