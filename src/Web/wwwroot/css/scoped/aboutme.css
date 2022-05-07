@@ -29,3 +29,7 @@
 .social-link {
     margin-right: 20px;
 }
+
+.social-link a{
+    text-decoration: none;
+}
