@@ -6,6 +6,13 @@
 
 @section Header
 {
+    <meta property="og:type"        content="website" />
+    <meta name="twitter:card"       content="Anteccq KOTONOHA" />
+    <meta property="og:url"         content="https://www.anteccq.net/" />
+    <meta name="description" content="Anteccq Web Site">
+    <meta property="og:title"       content="Anteccq - KOTONOHA">
+    <meta property="og:description" content="@Html.Raw(string.Join(",", Model.Summaries.Select(x => x.Title).Take(2)))" />
+
     <link href="~/css/scoped/home.css" rel="stylesheet" />
 }
 
