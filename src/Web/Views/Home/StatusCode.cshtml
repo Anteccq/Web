@@ -1,0 +1,18 @@
+﻿@model StatusCodeViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+@section Header
+{
+    <link href="~/css/scoped/statuscode.css" rel="stylesheet" />
+}
+
+@if (Model.StatusCode.HasValue)
+{
+    <h1 class="error-statuscode">@Model.StatusCode.Value.ToString()</h1>
+}
+else
+{
+    <h1 class="error-statuscode">An Error occurred. Would you like some tea? ☕</h1>
+}
