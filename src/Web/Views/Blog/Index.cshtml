@@ -1,12 +1,19 @@
 ﻿@model Web.Models.Data.Blogs.Blog;
 
 @section Header{
+    <meta property="og:type"        content="article" />
+    <meta name="twitter:card"       content="@Html.Raw(Model.Title)" />
+    <meta property="og:url"         content="https://www.anteccq.net/blog/@Model.Id.ToString()" />
+    <meta name="description" content="@Html.Raw(Model.SummaryContent)">
+    <meta property="og:title"       content="@Html.Raw(Model.Title)">
+    <meta property="og:description" content="@Html.Raw(Model.SummaryContent)" />
+
     <link href="~/css/prism.css" rel="stylesheet" />
     <link href="~/css/scoped/blog.css" rel="stylesheet" />
 }
 
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = @Model.Title;
 }
 
 <div class="blog-content">
