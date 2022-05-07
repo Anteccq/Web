@@ -11,6 +11,8 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddSingleton<IBlogRepository, StubBlogRepository>();
 }
 
+builder.Services.AddSingleton<IBlogRepository, StubBlogRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
