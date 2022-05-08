@@ -15,6 +15,11 @@ public class BlogController : Controller
     [HttpGet("blog/{id}")]
     public async Task<IActionResult> IndexAsync(int id)
     {
+        var blog = await _blogRepository.GetByIdAsync(id);
+
+        if(blog is null)
+            return NotFound();
+        
         return View(await _blogRepository.GetByIdAsync(id));
     }
 }
