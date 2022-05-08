@@ -16,9 +16,9 @@ public class StubBlogRepository : IBlogRepository
             _renderedBody, DateTimeOffset.Parse("2022/05/07"), DateTimeOffset.Parse("2022/05/07"));
     }
 
-    public Task<Blog> GetByIdAsync(int id)
+    public Task<Blog?> GetByIdAsync(int id)
     {
-        return Task.FromResult(_embeddedBlog);
+        return Task.FromResult(_embeddedBlog)!;
     }
 
     public Task<IEnumerable<Blog>> GetAsync(int count = 5, int offset = 0)
