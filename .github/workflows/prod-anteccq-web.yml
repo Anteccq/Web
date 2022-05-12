@@ -3,6 +3,8 @@ on:
   push:
     branches:
     - main
+    paths-ignore:
+      - "**/*.md"
 env:
   AZURE_WEBAPP_NAME: prod-anteccq-web
   AZURE_WEBAPP_PACKAGE_PATH: src/Web/published
