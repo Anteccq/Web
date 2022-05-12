@@ -4,8 +4,8 @@ namespace Web.Models.Repositories.Blogs;
 
 public interface IBlogRepository
 {
-    public Task<Blog?> GetByIdAsync(int id);
+    public Task<Blog?> GetByIdAsync(string name);
     public Task<IEnumerable<Blog>> GetAsync(int count = 5, int offset = 0);
     public Task CreateAsync(string markdownContent, string[] tags);
-    public Task UpdateAsync(long id, string markdownContent, string[] tags);
+    public Task UpdateAsync(string name, string markdownContent, string[] tags);
 }

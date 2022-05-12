@@ -18,7 +18,7 @@
 <div class="blog-list">
 @foreach (var summary in Model.Summaries)
 {
-    <h1><a class="blog-link" href="blog/@summary.Id">@summary.Title</a></h1>
+    <h1><a class="blog-link" href="blog/@summary.Name">@summary.Title</a></h1>
     <p class="tags">@string.Join(", ", summary.Tags)</p>
     <div class="blog-timestamp">
         <time datetime="@summary.CreatedAt.ToString("yyyy-MM-dd")">投稿日: @summary.CreatedAt.ToString("yyyy/MM/dd")</time>

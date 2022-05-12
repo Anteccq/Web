@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="BinarizedPosts\*" />
+    <Content Include="Posts\*" Exclude="Posts\_template" />
     <Content Include="DummyBlogContent.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -29,11 +29,14 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
-    <Folder Include="Posts\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="BinarizedPosts\*">
+    <None Include="Posts\_template" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Posts\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

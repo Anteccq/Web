@@ -12,14 +12,14 @@ public class BlogController : Controller
         _blogRepository = blogRepository;
     }
 
-    [HttpGet("blog/{id:int}")]
-    public async Task<IActionResult> IndexAsync(int id)
+    [HttpGet("blog/{name}")]
+    public async Task<IActionResult> IndexAsync(string name)
     {
-        var blog = await _blogRepository.GetByIdAsync(id);
+        var blog = await _blogRepository.GetByIdAsync(name);
 
         if(blog is null)
             return NotFound();
         
-        return View(await _blogRepository.GetByIdAsync(id));
+        return View(await _blogRepository.GetByIdAsync(name));
     }
 }
