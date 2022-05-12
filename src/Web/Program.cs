@@ -1,5 +1,5 @@
-using Web.Models.Services.Blogs;
-using Web.Models.Services.Blogs.Files;
+using Web.Models.Repositories.Blogs;
+using Web.Models.Repositories.Blogs.Files;
 
 var builder = WebApplication.CreateBuilder(args);
 
