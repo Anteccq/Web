@@ -38,7 +38,7 @@ public class FileSystemBlogRepository : IBlogRepository
     public async Task<IEnumerable<Blog>> GetAsync(int count = 5, int offset = 0)
     {
         if (IsLatestParameter() && _cachedLatestBlogs.Any())
-            return _cachedLatestBlogs.OrderByDescending(x => x.CreatedAt);
+            return _cachedLatestBlogs;
 
         var tasks = Directory.EnumerateFiles(DirectoryPath)
             .Where(x => Path.GetExtension(x) == ".md")
