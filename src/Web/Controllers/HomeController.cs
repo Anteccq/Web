@@ -20,7 +20,7 @@ namespace Web.Controllers
         public async Task<IActionResult> Index()
         {
             var blogs = await _blogRepository.GetAsync();
-            return View(new IndexViewModel(blogs.Select(x => new BlogSummary(x.Name, x.Title, x.SummaryContent, x.Tags, x.CreatedAt, x.UpdatedAt))));
+            return View(new IndexViewModel(blogs.Select(x => new BlogSummary(x.Name, x.Title, x.SummaryContent, x.Tags, x.CreatedAt, x.UpdatedAt)).OrderByDescending(x => x.CreatedAt)));
         }
 
         public IActionResult StatusCode(int? id)
