@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Web.Models.Data.Blogs;
-using Web.Models.Services.Blogs;
+using Web.Models.Repositories.Blogs;
 using Web.Models.ViewModels;
 
 namespace Web.Controllers

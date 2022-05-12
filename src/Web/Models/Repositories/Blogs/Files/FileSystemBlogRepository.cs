@@ -2,7 +2,7 @@
 using MessagePack;
 using Web.Models.Data.Blogs;
 
-namespace Web.Models.Services.Blogs.Files;
+namespace Web.Models.Repositories.Blogs.Files;
 
 public class FileSystemBlogRepository : IBlogRepository
 {

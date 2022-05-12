@@ -1,6 +1,6 @@
 ﻿using Web.Models.Data.Blogs;
 
-namespace Web.Models.Services.Blogs;
+namespace Web.Models.Repositories.Blogs;
 
 public interface IBlogRepository
 {

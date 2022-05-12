@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Web.Models.Services.Blogs;
+using Web.Models.Repositories.Blogs;
 
 namespace Web.Controllers;
 
@@ -12,7 +12,7 @@ public class BlogController : Controller
         _blogRepository = blogRepository;
     }
 
-    [HttpGet("blog/{id}")]
+    [HttpGet("blog/{id:int}")]
     public async Task<IActionResult> IndexAsync(int id)
     {
         var blog = await _blogRepository.GetByIdAsync(id);

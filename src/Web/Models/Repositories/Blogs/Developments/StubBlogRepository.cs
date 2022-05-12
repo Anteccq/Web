@@ -1,7 +1,7 @@
 ﻿using Markdig;
 using Web.Models.Data.Blogs;
 
-namespace Web.Models.Services.Blogs.Developments;
+namespace Web.Models.Repositories.Blogs.Developments;
 
 public class StubBlogRepository : IBlogRepository
 {
