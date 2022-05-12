@@ -10,3 +10,11 @@
     color: black;
     text-decoration: none;
 }
+
+.blog-link:hover {
+    color: dimgray;
+}
+
+.blog-item {
+    margin-bottom: 32px;
+}
