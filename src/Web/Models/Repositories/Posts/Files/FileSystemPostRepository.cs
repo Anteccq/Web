@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Globalization;
 using Markdig;
 using Web.Models.Data.Posts;
 
@@ -71,32 +72,35 @@ public class FileSystemPostRepository : IPostRepository
         throw new NotImplementedException();
     }
 
-    private static async Task<(string? title, string? markdownContent, string[]? tags)> GetBlogElementsAsync(string filePath)
+    private static async Task<(string? title, string? markdownContent, string[]? tags, string? createdTime, string? updatedTime)> GetBlogElementsAsync(string filePath)
     {
         await using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
         using var sr = new StreamReader(fs);
 
         var title = await sr.ReadLineAsync();
         var rawTagText = await sr.ReadLineAsync();
+        var createdTime = await sr.ReadLineAsync();
+        var updateTime = await sr.ReadLineAsync();
         _ = sr.ReadLineAsync();
         var markdownContent = await sr.ReadToEndAsync();
 
-        return (title, markdownContent, rawTagText?.Split(',').Select(y => y.TrimStart(' ')).ToArray());
+        return (title, markdownContent, rawTagText?.Split(',').Select(y => y.TrimStart(' ')).ToArray(), createdTime, updateTime);
     }
 
     private async Task<Post?> GetBlogFromFileAsync(string path)
     {
-        var (title, markdownContent, tags) = await GetBlogElementsAsync(path);
+        var (title, markdownContent, tags, createdTime, updatedTime) = await GetBlogElementsAsync(path);
         if (title is null || markdownContent is null || tags is null)
             return null;
+        const string timeFormat = "yyyy/MM/dd";
 
         var fileName = Path.GetFileNameWithoutExtension(path);
         var text = Markdown.ToPlainText(markdownContent);
         var summary = text[..Math.Min(80, text.Length)].TrimEnd(' ') + "...";
         var renderedContent = Markdown.ToHtml(markdownContent, _pipeline);
-        var createdAt = new DateTimeOffset(File.GetCreationTimeUtc(path), TimeSpan.Zero);
-        var updatedAt = new DateTimeOffset(File.GetLastWriteTimeUtc(path));
+        DateTimeOffset.TryParseExact(createdTime, timeFormat, null, DateTimeStyles.None, out var createdAt);
+        var updatedAtParseResult = DateTimeOffset.TryParseExact(updatedTime, timeFormat, null, DateTimeStyles.None, out var updatedAt);
 
-        return new Post(fileName, title, tags, summary, renderedContent, createdAt, updatedAt);
+        return new Post(fileName, title, tags, summary, renderedContent, createdAt, updatedAtParseResult ? updatedAt : createdAt);
     }
 }
