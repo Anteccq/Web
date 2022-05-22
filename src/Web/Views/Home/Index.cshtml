@@ -15,13 +15,13 @@
     <link href="~/css/scoped/home.css" rel="stylesheet" />
 }
 
-<div class="blog-list">
+<div class="post-list">
 @foreach (var summary in Model.Summaries)
 {
-    <div class="blog-item">
-        <h1><a class="blog-link" href="blog/@summary.Name">@summary.Title</a></h1>
+    <div class="post-item">
+        <h1><a class="post-link" href="blog/@summary.Name">@summary.Title</a></h1>
         <p class="tags">@string.Join(", ", summary.Tags)</p>
-        <div class="blog-timestamp">
+        <div class="post-timestamp">
             <time datetime="@summary.CreatedAt.ToString("yyyy-MM-dd")">投稿日: @summary.CreatedAt.ToString("yyyy/MM/dd")</time>
             <time datetime="@summary.UpdatedAt.ToString("yyyy-MM-dd")">更新日: @summary.UpdatedAt.ToString("yyyy/MM/dd")</time>
         </div>

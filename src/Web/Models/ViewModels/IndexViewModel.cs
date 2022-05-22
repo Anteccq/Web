@@ -1,5 +1,5 @@
-﻿using Web.Models.Data.Blogs;
+﻿using Web.Models.Data.Posts;
 
 namespace Web.Models.ViewModels;
 
-public record IndexViewModel(IEnumerable<BlogSummary> Summaries);
+public record IndexViewModel(IEnumerable<PostSummary> Summaries);

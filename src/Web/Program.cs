@@ -1,5 +1,5 @@
-using Web.Models.Repositories.Blogs;
-using Web.Models.Repositories.Blogs.Files;
+using Web.Models.Repositories.Posts;
+using Web.Models.Repositories.Posts.Files;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +8,10 @@ builder.Services.AddControllersWithViews();
 
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.AddSingleton<IBlogRepository, FileSystemBlogRepository>();
+    builder.Services.AddSingleton<IPostRepository, FileSystemPostRepository>();
 }
 
-builder.Services.AddSingleton<IBlogRepository, FileSystemBlogRepository>();
+builder.Services.AddSingleton<IPostRepository, FileSystemPostRepository>();
 
 var app = builder.Build();
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Web.Models.Data.Blogs;
-using Web.Models.Repositories.Blogs;
+using Web.Models.Data.Posts;
+using Web.Models.Repositories.Posts;
 using Web.Models.ViewModels;
 
 namespace Web.Controllers
@@ -9,18 +9,18 @@ namespace Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IBlogRepository _blogRepository;
+        private readonly IPostRepository _postRepository;
 
-        public HomeController(IBlogRepository blogRepository, ILogger<HomeController> logger)
+        public HomeController(IPostRepository postRepository, ILogger<HomeController> logger)
         {
             _logger = logger;
-            _blogRepository = blogRepository;
+            _postRepository = postRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var blogs = await _blogRepository.GetAsync();
-            return View(new IndexViewModel(blogs.Select(x => new BlogSummary(x.Name, x.Title, x.SummaryContent, x.Tags, x.CreatedAt, x.UpdatedAt)).OrderByDescending(x => x.CreatedAt)));
+            var posts = await _postRepository.GetAsync();
+            return View(new IndexViewModel(posts.Select(x => new PostSummary(x.Name, x.Title, x.SummaryContent, x.Tags, x.CreatedAt, x.UpdatedAt)).OrderByDescending(x => x.CreatedAt)));
         }
 
         public IActionResult StatusCode(int? id)

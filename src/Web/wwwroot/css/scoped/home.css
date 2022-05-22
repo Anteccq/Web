@@ -1,20 +1,20 @@
-﻿.blog-list {
+﻿.post-list {
     margin-top: 32px;
 }
 
-.blog-list p{
+.post-list p{
     margin-bottom: 0px;
 }
 
-.blog-link {
+.post-link {
     color: black;
     text-decoration: none;
 }
 
-.blog-link:hover {
+.post-link:hover {
     color: dimgray;
 }
 
-.blog-item {
+.post-item {
     margin-bottom: 32px;
 }
