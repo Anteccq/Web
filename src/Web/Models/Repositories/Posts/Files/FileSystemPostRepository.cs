@@ -1,27 +1,27 @@
 ﻿using System.Collections.Concurrent;
 using Markdig;
-using Web.Models.Data.Blogs;
+using Web.Models.Data.Posts;
 
-namespace Web.Models.Repositories.Blogs.Files;
+namespace Web.Models.Repositories.Posts.Files;
 
-public class FileSystemBlogRepository : IBlogRepository
+public class FileSystemPostRepository : IPostRepository
 {
     private const string DirectoryPath = "./Posts";
 
-    private readonly ConcurrentDictionary<string, Blog> _cachedBlogs = new();
+    private readonly ConcurrentDictionary<string, Post> _cachedPosts = new();
 
-    private readonly ConcurrentBag<Blog> _cachedLatestBlogs = new();
+    private readonly ConcurrentBag<Post> _cachedLatestPosts = new();
 
     private readonly MarkdownPipeline _pipeline;
 
-    public FileSystemBlogRepository()
+    public FileSystemPostRepository()
     {
         _pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().DisableHtml().Build();
     }
 
-    public async Task<Blog?> GetByIdAsync(string name)
+    public async Task<Post?> GetByIdAsync(string name)
     {
-        if (_cachedBlogs.TryGetValue(name, out var value))
+        if (_cachedPosts.TryGetValue(name, out var value))
             return value;
 
         var path = Path.Combine(DirectoryPath, name + ".md");
@@ -30,15 +30,15 @@ public class FileSystemBlogRepository : IBlogRepository
 
         var blog = await GetBlogFromFileAsync(path);
         if (blog is not null)
-            _cachedBlogs.TryAdd(name, blog);
+            _cachedPosts.TryAdd(name, blog);
 
         return blog;
     }
 
-    public async Task<IEnumerable<Blog>> GetAsync(int count = 5, int offset = 0)
+    public async Task<IEnumerable<Post>> GetAsync(int count = 5, int offset = 0)
     {
-        if (IsLatestParameter() && _cachedLatestBlogs.Any())
-            return _cachedLatestBlogs;
+        if (IsLatestParameter() && _cachedLatestPosts.Any())
+            return _cachedLatestPosts;
 
         var tasks = Directory.EnumerateFiles(DirectoryPath)
             .Where(x => Path.GetExtension(x) == ".md")
@@ -47,15 +47,15 @@ public class FileSystemBlogRepository : IBlogRepository
             .Take(count)
             .Select(GetBlogFromFileAsync);
 
-        var blogs = (await Task.WhenAll(tasks)).OfType<Blog>();
+        var posts = (await Task.WhenAll(tasks)).OfType<Post>();
 
         if (!IsLatestParameter())
-            return blogs;
+            return posts;
         
-        foreach (var blog in blogs)
-            _cachedLatestBlogs.Add(blog);
+        foreach (var post in posts)
+            _cachedLatestPosts.Add(post);
 
-        return _cachedLatestBlogs;
+        return _cachedLatestPosts;
 
         bool IsLatestParameter()
             => count == 5 && offset == 0;
@@ -84,7 +84,7 @@ public class FileSystemBlogRepository : IBlogRepository
         return (title, markdownContent, rawTagText?.Split(',').Select(y => y.TrimStart(' ')).ToArray());
     }
 
-    private async Task<Blog?> GetBlogFromFileAsync(string path)
+    private async Task<Post?> GetBlogFromFileAsync(string path)
     {
         var (title, markdownContent, tags) = await GetBlogElementsAsync(path);
         if (title is null || markdownContent is null || tags is null)
@@ -97,6 +97,6 @@ public class FileSystemBlogRepository : IBlogRepository
         var createdAt = new DateTimeOffset(File.GetCreationTimeUtc(path), TimeSpan.Zero);
         var updatedAt = new DateTimeOffset(File.GetLastWriteTimeUtc(path));
 
-        return new Blog(fileName, title, tags, summary, renderedContent, createdAt, updatedAt);
+        return new Post(fileName, title, tags, summary, renderedContent, createdAt, updatedAt);
     }
 }

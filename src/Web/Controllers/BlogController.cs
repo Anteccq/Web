@@ -1,25 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Web.Models.Repositories.Blogs;
+using Web.Models.Repositories.Posts;
 
 namespace Web.Controllers;
 
 public class BlogController : Controller
 {
-    private readonly IBlogRepository _blogRepository;
+    private readonly IPostRepository _postRepository;
 
-    public BlogController(IBlogRepository blogRepository)
+    public BlogController(IPostRepository postRepository)
     {
-        _blogRepository = blogRepository;
+        _postRepository = postRepository;
     }
 
     [HttpGet("blog/{name}")]
     public async Task<IActionResult> IndexAsync(string name)
     {
-        var blog = await _blogRepository.GetByIdAsync(name);
+        var post = await _postRepository.GetByIdAsync(name);
 
-        if(blog is null)
+        if(post is null)
             return NotFound();
         
-        return View(await _blogRepository.GetByIdAsync(name));
+        return View(post);
     }
 }
